@@ -1,5 +1,6 @@
 package com.swann.exceaption;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,10 +11,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @RestController
-public class CustomResponseException extends ResponseEntityExceptionHandler {
+public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler
-    public final ResponseEntity<Object> handleUserException(UserException ux, WebRequest request) {
-        UserExceptionResponse exceptionResponse = new UserExceptionResponse(ux.getMessage());
+    public final ResponseEntity<Object> handleProjectIdException(UserIdException ex, WebRequest request){
+        UserIdExceptionResponse exceptionResponse = new UserIdExceptionResponse(ex.getMessage());
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
 }

@@ -1,32 +1,52 @@
 package com.swann.service;
 
-import com.swann.entity.User;
-import com.swann.exceaption.UserException;
-import com.swann.repository.UserRepo;
+import com.swann.entity.UserPost;
+import com.swann.exceaption.UserIdException;
+import com.swann.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     @Autowired
-    private UserRepo repo;
+    private UserRepository userRepository;
 
-    public User saveOrUpdate(User user) {
-        try {
-            return repo.save(user);
-        } catch (Exception e) {
-            throw new UserException("username (" + user.getName().toUpperCase() + ") is already taken");
+    public UserPost saveOrUpdateProject(UserPost user){
+        try{
+            return userRepository.save(user);
+        }catch (Exception e){
+            throw new UserIdException("Project ID '"+user.getId()+"' already exists");
         }
+
     }
 
-    public Iterable<User> findAll() {
-        return repo.findAll();
-    }
 
-//    public void delete(String name){
-//        User user = repo.findByName(name);
-//        if (user == null){{
-//            throw new
-//        }}
+    public UserPost findProjectByIdentifier(String userId){
+
+        UserPost post = userRepository.findByUserIdentifier(userId);
+        System.out.println(userId);
+        System.out.println(post);
+        if(post == null){
+            throw new UserIdException("User ID '"+userId+"' does not exist");
+
+        }
+        return post;
+    }
+//
+    public Iterable<UserPost> findAllProjects(){
+        return userRepository.findAll();
+    }
+//
+//
+//    public void deleteProjectByIdentifier(String userId){
+//        User project = userRepository.findByUserId(userId);
+//
+//        if(project == null){
+//            throw  new UserIdException("Cannot Project with ID '"+userId+"'. This project does not exist");
+//        }
+//
+//        userRepository.delete(project);
 //    }
+
 }
